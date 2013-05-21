@@ -29,7 +29,7 @@ void setup() {
   // iniciando a library e criando um mundo
   box2d = new PBox2D(this);  
   box2d.createWorld();
-  box2d.setGravity(0, -10);
+  box2d.setGravity(0, -20);
   // inicia o leitor de colisao
   box2d.listenForCollisions();
   // criacao de personagem
@@ -38,7 +38,7 @@ void setup() {
   // criacao de cenario
   boundaries = new ArrayList<Boundary>();
   boundaries.add(new Boundary(75, height-5, 150, 10)); //primeira parte do chao antes do seguimento elevado
-  boundaries.add(new Boundary(230,170, 100, 10)); //segmento elevado
+  boundaries.add(new Boundary(230,175, 100, 10)); //segmento elevado
   boundaries.add(new Boundary(375, height-5, 150, 10)); // segunda parte do chao pos seguimento elevado
   boundaries.add(new Boundary(675, height-5, 150, 10)); // terceira parte
   //boundaries.add(new Boundary(width/2, 5, width, 10));

@@ -19,8 +19,8 @@ class Plataform {
     w = w_; //largura
     h = h_; //altura
     v = v_; //velocidade
-    min = min_;
-    max = max_;
+    min = min_; //posicao minima para a barra voltar
+    max = max_; //posicao maxima que obriga a barra a voltar
 
     // novo poligono
     PolygonShape sd = new PolygonShape();
@@ -31,7 +31,7 @@ class Plataform {
     sd.setAsBox(box2dW, box2dH);
     
     FixtureDef fd = new FixtureDef();
-    fd.friction = 0.3; //se nao colocarmos friction o corpo nao ira se aderir a plataforma
+    fd.friction = 0.2; //se nao colocarmos friction o corpo nao ira se aderir a plataforma
     fd.density = 1; //densidade
     fd.shape=sd; //definido a shape para fixture
 
@@ -63,10 +63,16 @@ class Plataform {
     max-=deslocPerso;
     min-=deslocPerso;
     Vec2 pos = box2d.getBodyPixelCoord(b);
-    if(pos.x > max)
+    println("antes:");
+    println(pos.x);
+    if(pos.x > max){
       b.setLinearVelocity(new Vec2(-v.x,0));
-    if(pos.x <= min)
+    }
+    if(pos.x <= min){
       b.setLinearVelocity(v);
+    }
+    b.setTransform(new Vec2(box2d.coordPixelsToWorld(x,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem
+    println("depois:");
     println(pos.x);
     fill(255);
     stroke(0);

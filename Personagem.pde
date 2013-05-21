@@ -48,24 +48,24 @@ class Personagem {
     rectMode(CENTER);
     rect(0,0,altura,largura);//criando retangulo
     popMatrix();
-    
+   
     }
     
     void walk(int ncontato){
        vel = body.getLinearVelocity();
 
-      if((key == 'a' || key == 'A') && vel.x > -4){
-        body.applyForce(new Vec2 (-35,0), body.getWorldCenter());
+      if((key == 'a' || key == 'A') && vel.x > -4.5){
+        body.applyForce(new Vec2 (-70,0), body.getWorldCenter());
       }
-      if((key == 'd' || key == 'D') && vel.x < 4){
-        body.applyForce(new Vec2(35,0), body.getWorldCenter());
+      if((key == 'd' || key == 'D') && vel.x < 4.5){
+        body.applyForce(new Vec2(70,0), body.getWorldCenter());
       }
       if((key == 's' || key == 'S')){
         if(ncontato != 0) //so pode frear se estiver no chao
           body.setLinearVelocity(new Vec2(0,vel.y));
       }
       if((key == 'w' || key == 'W') && ncontato >= 1 && vel.y < 5){ //se estiver encostando em algo no chao
-        body.applyLinearImpulse(new Vec2(vel.x,20), body.getWorldCenter());
+        body.applyLinearImpulse(new Vec2(vel.x,25), body.getWorldCenter());
       }
       
       if(key == 'r' || key =='R'){
