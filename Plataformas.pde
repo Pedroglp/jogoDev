@@ -31,7 +31,7 @@ class Plataform {
     sd.setAsBox(box2dW, box2dH);
     
     FixtureDef fd = new FixtureDef();
-    fd.friction = 0.2; //se nao colocarmos friction o corpo nao ira se aderir a plataforma
+    fd.friction = 0.6; //se nao colocarmos friction o corpo nao ira se aderir a plataforma
     fd.density = 1; //densidade
     fd.shape=sd; //definido a shape para fixture
 
@@ -59,7 +59,7 @@ class Plataform {
   }*/
 
   // Desenhando
-  void display(float deslocPerso) {
+  void display(float deslocPerso, boolean naPlataforma) {
     max-=deslocPerso;
     min-=deslocPerso;
     Vec2 pos = box2d.getBodyPixelCoord(b);
@@ -69,9 +69,12 @@ class Plataform {
     if(pos.x <= min){
       b.setLinearVelocity(v);
     }
-    Vec2 vel = b.getLinearVelocity();
-    b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x-deslocPerso,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem, como objeto se move
-    //nao pode ser em x, se não fixara ele a todo momento na posicao inicial.
+    if(naPlataforma) //essa booleana foi adicionada pois se o personagem estiver em cima da plataforma seu deslocamento em relacao a ela deve ser 0!
+      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x+0,y)),0);
+    else
+      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x-deslocPerso,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem, como objeto se move
+      //nao pode ser em x, se não fixara ele a todo momento na posicao inicial.
+    pos = box2d.getBodyPixelCoord(b);
     fill(255);
     stroke(0);
     rectMode(CENTER);
