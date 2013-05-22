@@ -54,11 +54,11 @@ class Personagem {
     void walk(int ncontato){
        vel = body.getLinearVelocity();
 
-      if((key == 'a' || key == 'A') && vel.x > -4.5){
-        body.applyForce(new Vec2 (-70,0), body.getWorldCenter());
+      if((key == 'a' || key == 'A') && vel.x > -4.5){ //limito a velocidade maxima
+        body.applyForce(new Vec2 (-175,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
       }
       if((key == 'd' || key == 'D') && vel.x < 4.5){
-        body.applyForce(new Vec2(70,0), body.getWorldCenter());
+        body.applyForce(new Vec2(175,0), body.getWorldCenter());
       }
       if((key == 's' || key == 'S')){
         if(ncontato != 0) //so pode frear se estiver no chao
@@ -71,7 +71,6 @@ class Personagem {
       if(key == 'r' || key =='R'){
         body.setTransform(new Vec2(box2d.coordPixelsToWorld(20,20)),0);
         body.setLinearVelocity(new Vec2(0,0));
-        //body.position.set(box2d.coordPixelsToWorld(20,20));
       }
       key = '^';//limpando a tecla, nao achei modo melhor
     }

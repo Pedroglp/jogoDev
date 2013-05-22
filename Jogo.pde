@@ -76,9 +76,6 @@ void draw() {
     wall.display();
   }
   for (Plataform plat: plataforms) {
-    //plat.y -= (posAtuPerso.y - posAntPerso.y);  //isso faz a camera se manter centrada no eixo y do personagem
-    plat.x -= (posAtuPerso.x - posAntPerso.x);  //isso faz a camera se manter centrada no eixo x do personagem
-    //plat.move(velPerso);
     plat.display((posAtuPerso.x - posAntPerso.x));
   }
   

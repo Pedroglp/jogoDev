@@ -63,17 +63,15 @@ class Plataform {
     max-=deslocPerso;
     min-=deslocPerso;
     Vec2 pos = box2d.getBodyPixelCoord(b);
-    println("antes:");
-    println(pos.x);
     if(pos.x > max){
       b.setLinearVelocity(new Vec2(-v.x,0));
     }
     if(pos.x <= min){
       b.setLinearVelocity(v);
     }
-    b.setTransform(new Vec2(box2d.coordPixelsToWorld(x,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem
-    println("depois:");
-    println(pos.x);
+    Vec2 vel = b.getLinearVelocity();
+    b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x-deslocPerso,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem, como objeto se move
+    //nao pode ser em x, se não fixara ele a todo momento na posicao inicial.
     fill(255);
     stroke(0);
     rectMode(CENTER);
