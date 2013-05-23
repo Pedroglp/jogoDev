@@ -59,12 +59,20 @@ class Plataform {
     max.y-=delta.y;
     min.y-=delta.y;
     Vec2 pos = box2d.getBodyPixelCoord(b);
-    if(pos.x > max.x)
-      b.setLinearVelocity(new Vec2(-v.x,0));
+    Vec2 velAtual = b.getLinearVelocity();
+    
+    if(pos.x >= max.x)
+      b.setLinearVelocity(new Vec2(-v.x,velAtual.y));
     if(pos.x <= min.x)
-      b.setLinearVelocity(new Vec2(v.x,0));
+      b.setLinearVelocity(new Vec2(v.x,velAtual.y));
     
-    
+    //para os limites de y preste atencao no sistema de coordenadas de pixels!
+    if(pos.y <= max.y)
+      b.setLinearVelocity(new Vec2(velAtual.x,+v.y));
+    if(pos.y >= min.y)
+      b.setLinearVelocity(new Vec2(velAtual.x,-v.y));
+    println("posicao y:");
+    println(pos.y);
     if(naPlataforma) //essa booleana foi adicionada pois se o personagem estiver em cima da plataforma seu deslocamento em relacao a ela deve ser 0!
       b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x+0,pos.y-delta.y)),0);
     else

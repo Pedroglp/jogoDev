@@ -1,5 +1,5 @@
 //incluindo as Libs da box2d
-//caso nao tenha feita o download, siga os passos:
+//caso nao tenha feito o download, siga os passos:
 //skecth -> import library -> Add Library -> Box2d
 
 import pbox2d.*;
@@ -16,22 +16,22 @@ Personagem personagem;
 int ncontato = 0; //numero de contatos entre certa shape
 Vec2 posAntPerso; //posicao antes do walk
 Vec2 posAtuPerso; //posicao pos walk
-Vec2 velPerso; //velocidade personagem
+//Vec2 velPerso; //velocidade personagem
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 boolean naPlataforma = false; //necessario para tratar o movimento do personagem em cima da plataforma
 //int contadordeloops = 0; //para debug
-int fase = 1;
+int fase = 1; //fase começa em 1 por padrao
 
-ArrayList<Boundary> boundaries;
+ArrayList<Boundary> boundaries; //uma array que guardara todos os segmentos de chao do cenario
 
-ArrayList<Plataform> plataforms;
+ArrayList<Plataform> plataforms; //uma array que guardara todos as plataformas do cenario
 
 void setup() {
   size(1000, 400);
   // iniciando a library e criando um mundo
-  box2d = new PBox2D(this);  
-  box2d.createWorld();
-  box2d.setGravity(0, -20);
+  box2d = new PBox2D(this); //iniciando box2d
+  box2d.createWorld(); //criando um "mundo fisico"
+  box2d.setGravity(0, -20); //gravidade -20m/s, antes era 10 mas falaram que estava muito lunar
   // inicia o leitor de colisao
   box2d.listenForCollisions();
   // criacao de personagem
@@ -46,17 +46,15 @@ void draw() {
   box2d.step(); // a cada vez que draw fizer 1 loop, sera feito um loop nas acoes da box2d
   
   if(primeiroLoop == true){
-    posAntPerso = new Vec2(20,20);
-    primeiroLoop = false;
-    criarCenario(fase);
+    posAntPerso = new Vec2(20,20); //personagem inicia em 20,20, logo essa eh sua primeira posicao anterior
+    criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
+    primeiroLoop = false; //depois disso nao ser mais o primeiro loop
   }
   else
     posAntPerso = personagem.pos; //pegando a posicao do personagem antes de se mover
-  //println(posAntPerso);
-  personagem.display();
-  personagem.walk(ncontato);
-  posAtuPerso = personagem.pos; //pegando pos ele se mover
-  velPerso = personagem.vel;
+    personagem.display(); //roda a animacao do personagem
+    personagem.walk(ncontato); //chama a funcao de andar do personagem
+    posAtuPerso = personagem.pos; //pegando pos ele se mover
   
   //println(posAtuPerso);
   
@@ -76,8 +74,8 @@ void draw() {
   print('x');
   println(mouseX);
   print('y');
-  println(mouseY);
-  */
+  println(mouseY);*/
+  
 }
 
 

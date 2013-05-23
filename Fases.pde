@@ -6,7 +6,7 @@
 //Respectivamente seus argumentos sao: posicao na tela x, posicao na tela y, comprimento, espessura
 //Plataform eh a funcao(classe?) construtora para plataformas moveis, tanto em x quanto em y
 //Respectivamente seus argumentos sao: posicao na tela x, posicao na tela y, comprimento, espessura, Velocidade de movimento, vetor(xmin,ymin), vetor(xmax,ymax)
-//>>>OBS PLATAFORMAS COM MOVIMENTO EM Y PARCIALMENTE IMPLEMENTADA E NAO TESTADA<<<<
+//>>>OBS PLATAFORMAS COM MOVIMENTO EM Y IMPLEMENTADA E NAO TESTADA<<<<
 
 void criarCenario(int fase){
     switch(fase){
@@ -20,6 +20,7 @@ void criarCenario(int fase){
   
       plataforms = new ArrayList<Plataform>();
       plataforms.add(new Plataform(485, height-5, 70,10,new Vec2(2,0),new Vec2(485,150),new Vec2(566,150)));
+      plataforms.add(new Plataform(786, height-5, 70,10,new Vec2(0,2),new Vec2(566,150),new Vec2(566,height-5)));
       break;
   }
 }
