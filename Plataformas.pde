@@ -2,18 +2,19 @@ class Plataform {
 
   // A boundary is a simple rectangle with x,y,width,and height
   //Uma fronteira eh um simples retangulo com x,y,lagura e altura
-  float x;
-  float y;
-  float w;
-  float h;
+  float x;   //posicao
+  float y;  //poicao
+  float w; //largura
+  float h; //altura
   Vec2 v;
-  float max;
-  float min;
+  //limites de movimento da plataforma
+  Vec2 max;  //maximo valor para posicao (x,y)
+  Vec2 min; //minimo valor para posicao (x,y)
   
   // Criando um variavel do tipo Body para guardar as informacoes
   Body b;
 
-  Plataform(float x_,float y_, float w_, float h_, Vec2 v_,float min_,float max_) {
+  Plataform(float x_,float y_, float w_, float h_, Vec2 v_,Vec2 min_,Vec2 max_) {
     x = x_; //posicao na tela x
     y = y_; //posicao na tela y
     w = w_; //largura
@@ -50,29 +51,24 @@ class Plataform {
     b.setUserData(this); //atribuimos isso para a linha Object o1 = b1.getUserData();
   }
   
-  /*void move(Vec2 velPerso){
-    Vec2 velPlat = b.getLinearVelocity();
-    Vec2 velRelativa = velPerso;
-    //b.setTransform(new Vec2(box2d.coordPixelsToWorld(x,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem
-    b.setLinearVelocity(new Vec2(velPlat.x + velPerso.x,0));
-    
-  }*/
-
   // Desenhando
-  void display(float deslocPerso, boolean naPlataforma) {
-    max-=deslocPerso;
-    min-=deslocPerso;
+  void display(Vec2 posAntPerso, Vec2 posAtuPerso, boolean naPlataforma) {
+    Vec2 delta = new Vec2((posAtuPerso.x - posAntPerso.x),(posAtuPerso.y - posAntPerso.y));; //vetor que recebera a variacao da distancia do personagem em x e y
+    max.x-=delta.x; //ajustando o max apos deslocamento do personagem
+    min.x-=delta.x; //ajustando o min apos deslocamento do personagem
+    max.y-=delta.y;
+    min.y-=delta.y;
     Vec2 pos = box2d.getBodyPixelCoord(b);
-    if(pos.x > max){
+    if(pos.x > max.x)
       b.setLinearVelocity(new Vec2(-v.x,0));
-    }
-    if(pos.x <= min){
-      b.setLinearVelocity(v);
-    }
+    if(pos.x <= min.x)
+      b.setLinearVelocity(new Vec2(v.x,0));
+    
+    
     if(naPlataforma) //essa booleana foi adicionada pois se o personagem estiver em cima da plataforma seu deslocamento em relacao a ela deve ser 0!
-      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x+0,y)),0);
+      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x+0,pos.y-delta.y)),0);
     else
-      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x-deslocPerso,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem, como objeto se move
+      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x-delta.x,pos.y-delta.y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem, como objeto se move
       //nao pode ser em x, se não fixara ele a todo momento na posicao inicial.
     pos = box2d.getBodyPixelCoord(b);
     fill(255);

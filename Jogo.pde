@@ -19,14 +19,15 @@ Vec2 posAtuPerso; //posicao pos walk
 Vec2 velPerso; //velocidade personagem
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 boolean naPlataforma = false; //necessario para tratar o movimento do personagem em cima da plataforma
-//int contadordeloops = 0;
+//int contadordeloops = 0; //para debug
+int fase = 1;
 
 ArrayList<Boundary> boundaries;
 
 ArrayList<Plataform> plataforms;
 
 void setup() {
-  size(800, 200);
+  size(1000, 400);
   // iniciando a library e criando um mundo
   box2d = new PBox2D(this);  
   box2d.createWorld();
@@ -35,17 +36,6 @@ void setup() {
   box2d.listenForCollisions();
   // criacao de personagem
   personagem = new Personagem(20,20);
-  
-  // criacao de cenario
-  boundaries = new ArrayList<Boundary>();
-  boundaries.add(new Boundary(75, height-5, 150, 10)); //primeira parte do chao antes do seguimento elevado
-  boundaries.add(new Boundary(230,175, 100, 10)); //segmento elevado
-  boundaries.add(new Boundary(375, height-5, 150, 10)); // segunda parte do chao pos seguimento elevado
-  boundaries.add(new Boundary(675, height-5, 150, 10)); // terceira parte
-  boundaries.add(new Boundary(5, height/2, 10, height)); //parede atras do personagem
-  
-  plataforms = new ArrayList<Plataform>();
-  plataforms.add(new Plataform(485, height-5, 70,10,new Vec2(2,0),485,566));
   
 }
 
@@ -58,6 +48,7 @@ void draw() {
   if(primeiroLoop == true){
     posAntPerso = new Vec2(20,20);
     primeiroLoop = false;
+    criarCenario(fase);
   }
   else
     posAntPerso = personagem.pos; //pegando a posicao do personagem antes de se mover
@@ -71,11 +62,11 @@ void draw() {
   
   for (Boundary wall: boundaries) {
     wall.x -= (posAtuPerso.x - posAntPerso.x);  //isso faz a camera se manter centrada no eixo x do personagem
-    //wall.y -= (posAtuPerso.y - posAntPerso.y);  //isso faz a camera se manter centrada no eixo y do personagem
+    wall.y -= (posAtuPerso.y - posAntPerso.y);  //isso faz a camera se manter centrada no eixo y do personagem
     wall.display();
   }
   for (Plataform plat: plataforms) {
-      plat.display((posAtuPerso.x - posAntPerso.x),naPlataforma);
+      plat.display(posAntPerso,posAtuPerso,naPlataforma);
   }
   
   /*DEBUG
@@ -125,8 +116,8 @@ void endContact(Contact cp) {
     
     if (((o1.getClass() == Boundary.class || o1.getClass() == Plataform.class) && o2.getClass() == Personagem.class) 
                                           || ((o2.getClass() == Boundary.class || o2.getClass() == Plataform.class) && o1.getClass() == Personagem.class)){
-    ncontato-=1; //se a contato entre o chao/plataforma eo personagem acabou, tiramos 1 numero de contatos
-        if(o1.getClass() == Plataform.class || o2.getClass() == Plataform.class){
+     ncontato-=1; //se a contato entre o chao/plataforma eo personagem acabou, tiramos 1 numero de contatos
+     if(o1.getClass() == Plataform.class || o2.getClass() == Plataform.class){
       naPlataforma = false; //saiu da plataforma
     }
   }
