@@ -5,8 +5,8 @@ class Personagem {
   Vec2 vel;
 
   Personagem(float x, float y){
-    altura = 16;
-    largura = 16;
+    altura = 40;
+    largura = 40;
     
     BodyDef bd = new BodyDef(); //criando as caracteristicas de um corpo do nosso personagem
     bd.type = BodyType.DYNAMIC; //Sera um corpo dinamico (com movimento)
@@ -28,14 +28,14 @@ class Personagem {
     fd.shape = ps; //Informamos que o formato do corpo sera o formato ps criado. Isso porque, a box2d ira utilizar este para calular informacoes
     //uteis como: Massa, centro de massa, momento angular e etc.
     fd.density = 1; // definindo a densidade, veja, nao damos uma massa e sim a densidade, a massa sera calculada usando as dimensoes e densidade
-    fd.friction = 0.3; //coeficiente de atrito
+    fd.friction = 0.6; //coeficiente de atrito
     fd.restitution = 0.1; //coeficiente de restituicao
     
     body.createFixture(fd); //agora passamos as qualidades "fixture" criada para o nosso corpo
     body.setUserData(this); //atribuimos isso para a linha Object o1 = b1.getUserData();
   }
   
-    void display(){ //aqui sera a parte em que pegaremos os dados que a box2d nos da e desenharemos na tela
+    void display(Vec2 delta){ //aqui sera a parte em que pegaremos os dados que a box2d nos da e desenharemos na tela
     float angulo = body.getAngle(); //angulo do corpo
     pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
     
@@ -53,23 +53,24 @@ class Personagem {
     
     void walk(int ncontato){
        vel = body.getLinearVelocity();
+       pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
 
-      if((key == 'a' || key == 'A') && vel.x > -4.5){ //limito a velocidade maxima
-        body.applyForce(new Vec2 (-175,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
+      if((key == 'a' || key == 'A') && vel.x > -10){ //limito a velocidade maxima
+        body.applyForce(new Vec2 (-400,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
       }
-      if((key == 'd' || key == 'D') && vel.x < 4.5){
-        body.applyForce(new Vec2(175,0), body.getWorldCenter());
+      if((key == 'd' || key == 'D') && vel.x < 10){
+        body.applyForce(new Vec2(400,0), body.getWorldCenter());
       }
       if((key == 's' || key == 'S')){
         if(ncontato != 0) //so pode frear se estiver no chao
           body.setLinearVelocity(new Vec2(0,vel.y));
       }
       if((key == 'w' || key == 'W') && ncontato >= 1 && vel.y < 5){ //se estiver encostando em algo no chao
-        body.applyLinearImpulse(new Vec2(vel.x,25), body.getWorldCenter());
+        body.applyLinearImpulse(new Vec2(vel.x,150), body.getWorldCenter());
       }
       
       if(key == 'r' || key =='R'){
-        body.setTransform(new Vec2(box2d.coordPixelsToWorld(20,20)),0);
+        body.setTransform(new Vec2(box2d.coordPixelsToWorld(45,20)),0);
         body.setLinearVelocity(new Vec2(0,0));
       }
       key = '^';//limpando a tecla, nao achei modo melhor

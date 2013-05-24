@@ -21,6 +21,7 @@ boolean primeiroLoop = true;   //necessario para alguns eventos que so devem oco
 boolean naPlataforma = false; //necessario para tratar o movimento do personagem em cima da plataforma
 //int contadordeloops = 0; //para debug
 int fase = 1; //fase começa em 1 por padrao
+Vec2 velPerso;
 
 ArrayList<Boundary> boundaries; //uma array que guardara todos os segmentos de chao do cenario
 
@@ -31,11 +32,11 @@ void setup() {
   // iniciando a library e criando um mundo
   box2d = new PBox2D(this); //iniciando box2d
   box2d.createWorld(); //criando um "mundo fisico"
-  box2d.setGravity(0, -20); //gravidade -20m/s, antes era 10 mas falaram que estava muito lunar
+  box2d.setGravity(0, -10); //gravidade -20m/s, antes era 10 mas falaram que estava muito lunar
   // inicia o leitor de colisao
   box2d.listenForCollisions();
   // criacao de personagem
-  personagem = new Personagem(20,20);
+  personagem = new Personagem(45,20);
   
 }
 
@@ -46,17 +47,15 @@ void draw() {
   box2d.step(); // a cada vez que draw fizer 1 loop, sera feito um loop nas acoes da box2d
   
   if(primeiroLoop == true){
-    posAntPerso = new Vec2(20,20); //personagem inicia em 20,20, logo essa eh sua primeira posicao anterior
+    posAntPerso = posAtuPerso = new Vec2(20,20); //personagem inicia em 20,20, logo essa eh sua primeira posicao anterior
     criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
     primeiroLoop = false; //depois disso nao ser mais o primeiro loop
   }
   else
     posAntPerso = personagem.pos; //pegando a posicao do personagem antes de se mover
-    personagem.display(); //roda a animacao do personagem
-    personagem.walk(ncontato); //chama a funcao de andar do personagem
-    posAtuPerso = personagem.pos; //pegando pos ele se mover
-  
-  //println(posAtuPerso);
+  personagem.walk(ncontato); //chama a funcao de andar do personagem
+  posAtuPerso = personagem.pos; //pegando apos ele se mover
+  personagem.display(new Vec2(posAtuPerso.x - posAntPerso.x,posAtuPerso.y - posAntPerso.y)); //roda a animacao do personagem
   
   for (Boundary wall: boundaries) {
     wall.x -= (posAtuPerso.x - posAntPerso.x);  //isso faz a camera se manter centrada no eixo x do personagem
