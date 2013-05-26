@@ -12,7 +12,7 @@ void criarCenario(int fase){
     switch(fase){
     case 1:
       boundaries = new ArrayList<Boundary>(); //criamos um array que guardara todas as trilhas criadas
-      boundaries.add(new Boundary(250+50,height-10, 500, 20)); //adicionamos a primeira parte do chao antes da plataforma
+      boundaries.add(new Boundary(250+50, height-10, 500, 20)); //adicionamos a primeira parte do chao antes da plataforma
       boundaries.add(new Boundary(1200+75, height-10, 500, 20)); //segundo segmento pos plataforma
       boundaries.add(new Boundary(1600+100, height-10-60, 300, 20)); //segmento elevado
       boundaries.add(new Boundary(2075+50,height-10,500,20)); //pos segmento elevado

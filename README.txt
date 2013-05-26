@@ -7,3 +7,4 @@ Jogo.pde - Main Code
 Personagem.pde - Character (the box) class
 Plataformas.pde - Plataforms that move in the game
 Chao.pde - Ground Class
+Fases.pde - Simple function to create a new map for the game.

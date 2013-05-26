@@ -36,18 +36,18 @@ class Personagem {
   }
   
     void display(Vec2 delta){ //aqui sera a parte em que pegaremos os dados que a box2d nos da e desenharemos na tela
-      float angulo = body.getAngle(); //angulo do corpo
-      pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
+    float angulo = body.getAngle(); //angulo do corpo
+    pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
     
-      pushMatrix();
-      translate(100+delta.x,200+delta.y); //imagem sera deslocada
-      rotate(-angulo); //rodaremos no angulo dado pela box2d
-      fill(127); //colorindo
-      stroke(0);//borda
-      strokeWeight(2);//espesura da borda
-      rectMode(CENTER);
-      rect(0,0,altura,largura);//criando retangulo
-      popMatrix();
+    pushMatrix();
+    translate(pos.x,pos.y); //imagem sera deslocada
+    rotate(-angulo); //rodaremos no angulo dado pela box2d
+    fill(127); //colorindo
+    stroke(0);//borda
+    strokeWeight(2);//espesura da borda
+    rectMode(CENTER);
+    rect(0,0,altura,largura);//criando retangulo
+    popMatrix();
    
     }
     
@@ -66,11 +66,11 @@ class Personagem {
           body.setLinearVelocity(new Vec2(0,vel.y));
       }
       if((key == 'w' || key == 'W') && ncontato >= 1 && vel.y < 5){ //se estiver encostando em algo no chao
-        body.applyLinearImpulse(new Vec2(vel.x,175), body.getWorldCenter());
+        body.applyLinearImpulse(new Vec2(vel.x,150), body.getWorldCenter());
       }
       
       if(key == 'r' || key =='R'){
-        body.setTransform(new Vec2(box2d.coordPixelsToWorld(70,50)),0);
+        body.setTransform(new Vec2(box2d.coordPixelsToWorld(45,20)),0);
         body.setLinearVelocity(new Vec2(0,0));
       }
       key = '^';//limpando a tecla, nao achei modo melhor

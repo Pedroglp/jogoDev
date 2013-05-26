@@ -36,7 +36,7 @@ void setup() {
   // inicia o leitor de colisao
   box2d.listenForCollisions();
   // criacao de personagem
-  //personagem = new Personagem(70,50);
+  personagem = new Personagem(45,20);
   
 }
 
@@ -47,9 +47,7 @@ void draw() {
   box2d.step(); // a cada vez que draw fizer 1 loop, sera feito um loop nas acoes da box2d
   
   if(primeiroLoop == true){
-    //cria personagem
-    personagem = new Personagem(70,50);
-    posAntPerso = posAtuPerso = new Vec2(70,50); //personagem inicia em 70,50, logo essa eh sua primeira posicao anterior
+    posAntPerso = posAtuPerso = new Vec2(20,20); //personagem inicia em 20,20, logo essa eh sua primeira posicao anterior
     criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
     primeiroLoop = false; //depois disso nao ser mais o primeiro loop
   }
@@ -65,19 +63,17 @@ void draw() {
     wall.display();
   }
   for (Plataform plat: plataforms) {
-      //plat.x -= (posAtuPerso.x - posAntPerso.x);  //isso faz a camera se manter centrada no eixo x do personagem
-      //plat.y -= (posAtuPerso.y - posAntPerso.y);  //isso faz a camera se manter centrada no eixo y do personagem
       plat.display(posAntPerso,posAtuPerso,naPlataforma);
   }
   
   /*DEBUG
   contadordeloops++;
-  if(contadordeloops==200)
-    noLoop();*/
+  if(contadordeloops==2)
+    noLoop();
   print('x');
   println(mouseX);
   print('y');
-  println(mouseY);
+  println(mouseY);*/
   
 }
 
