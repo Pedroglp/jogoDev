@@ -2,6 +2,7 @@
 //caso nao tenha feito o download, siga os passos:
 //skecth -> import library -> Add Library -> Box2d
 
+/*DECLARANDO LIBS USADAS*/
 import pbox2d.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.joints.*;
@@ -10,12 +11,14 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
+/*FIM DA DECLARACAO DE LIBS*/
 
 PBox2D box2d; //necessario para iniciar a library
 Personagem personagem;
 int ncontato = 0; //numero de contatos entre certa shape
 Vec2 posAntPerso; //posicao antes do walk
 Vec2 posAtuPerso; //posicao pos walk
+Vec2 distancia = new Vec2(0,0);
 //Vec2 velPerso; //velocidade personagem
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 boolean naPlataforma = false; //necessario para tratar o movimento do personagem em cima da plataforma
@@ -23,6 +26,16 @@ boolean naPlataforma = false; //necessario para tratar o movimento do personagem
 int fase = 1; //fase começa em 1 por padrao
 Vec2 velPerso;
 
+/*USADAS PARA LEITURA DE TECLAS*/
+boolean[]keys = new boolean[4];
+final int A = 0;
+final int W = 1;
+final int S = 2;
+final int D = 3;
+char tecla;
+       
+
+/*USADAS PARA CONSTRUCAO DO CENARIO*/
 ArrayList<Boundary> boundaries; //uma array que guardara todos os segmentos de chao do cenario
 
 ArrayList<Plataform> plataforms; //uma array que guardara todos as plataformas do cenario
@@ -57,27 +70,27 @@ void draw() {
     posAntPerso = personagem.pos; //pegando a posicao do personagem antes de se mover
   personagem.walk(ncontato); //chama a funcao de andar do personagem
   posAtuPerso = personagem.pos; //pegando apos ele se mover
-  personagem.display(new Vec2(posAtuPerso.x - posAntPerso.x,posAtuPerso.y - posAntPerso.y)); //roda a animacao do personagem
+  Vec2 delta = new Vec2((posAtuPerso.x - posAntPerso.x),(posAtuPerso.y - posAntPerso.y));
+  distancia.x+=delta.x;
+  distancia.y+=delta.y;
   
+  personagem.display(); //roda a animacao do personagem
+  
+  pushMatrix();
+  translate(30-distancia.x,150-distancia.y); //deslocaremos a "camera" na distancia total percorrida pelo personagem em x e y. Lembrando que nossa camera eh centrada em 200,200.
   for (Boundary wall: boundaries) {
-    wall.x -= (posAtuPerso.x - posAntPerso.x);  //isso faz a camera se manter centrada no eixo x do personagem
-    wall.y -= (posAtuPerso.y - posAntPerso.y);  //isso faz a camera se manter centrada no eixo y do personagem
     wall.display();
   }
   for (Plataform plat: plataforms) {
-      //plat.x -= (posAtuPerso.x - posAntPerso.x);  //isso faz a camera se manter centrada no eixo x do personagem
-      //plat.y -= (posAtuPerso.y - posAntPerso.y);  //isso faz a camera se manter centrada no eixo y do personagem
-      plat.display(posAntPerso,posAtuPerso,naPlataforma);
+    plat.display();
   }
-  
+  popMatrix();
   /*DEBUG
   contadordeloops++;
   if(contadordeloops==200)
-    noLoop();*/
-  print('x');
-  println(mouseX);
-  print('y');
-  println(mouseY);
+    noLoop();
+  println("Posicao mouse x "+mouseX);
+  println("Posicao mouse y "+mouseY);*/
   
 }
 
@@ -101,7 +114,7 @@ void draw() {
       naPlataforma = true; //entro na plataforma
     }
   }
- }
+}
   
 void endContact(Contact cp) {
     // Pega as duas fixtures do que se chocou. Observe, o contato acontece entre fixtures e nao entre bodies
@@ -123,3 +136,66 @@ void endContact(Contact cp) {
     }
   }
 }
+
+/*CONTROLE DE TECLAS*/
+//Aqui eh importante entender o que foi feito para todo e qualquer jogo que utilize o teclado como captacao de dados
+//KeyPressed eh uma funcao/evento do processing que ocorre todo momento que voce aperta uma tecla
+//Dentro dela faremos um switch, em que analisaremos qual tecla foi pressionada, caso ela tenha sido pressionada,
+//mudaremos na nossa matriz falando que a tecla apertada esta "ON"(true)
+//O evento keyRelesead é semelhante ao keyPressed mas acontecera quando a tecla for solta.Nesse momento colocaremos
+//em nossa matriz que Key = false(off). 
+//Mas porque fazer todo esse processo e nao pegar diretamente "key"? Porque o processing matem na memoria
+//a tecla pressionada, e caso tentemos usar um metodo para limpar diferente deste(como por exemplo:
+//colocar key='umaTeclaNaoUsadaNoJogo" o tempo de resposta do personagem sera ruim.
+
+void keyPressed() {
+    tecla = key;
+    switch(tecla) {
+      case 'A':
+      case 'a':
+          keys[A] = true;
+          //println("a pressionado");
+          break;
+      case 'W':
+      case 'w':
+          keys[W] = true;
+          //println("w pressionado");
+          break;
+      case 'S':
+      case 's':
+          keys[S] = true;
+          //println("s pressionado");
+          break;
+      case 'D':
+      case 'd':
+          keys[D] = true;
+          //println("d pressionado");
+          break;       
+    } 
+}
+
+void keyReleased(){
+    tecla = key;
+    switch(tecla){
+      case 'A':
+      case 'a':
+          keys[A] = false;
+          //println("a solto");
+          break;
+      case 'W':
+      case 'w':
+          keys[W] = false;
+          //println("w solto");
+          break;
+      case 'S':
+      case 's':
+          keys[S] = false;
+          //println("s solto");
+          break;
+      case 'D':
+      case 'd': 
+          keys[D] = false;
+          //println("d solto");
+          break;       
+    }
+}    

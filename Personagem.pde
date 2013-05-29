@@ -35,12 +35,12 @@ class Personagem {
     body.setUserData(this); //atribuimos isso para a linha Object o1 = b1.getUserData();
   }
   
-    void display(Vec2 delta){ //aqui sera a parte em que pegaremos os dados que a box2d nos da e desenharemos na tela
+    void display(){ //aqui sera a parte em que pegaremos os dados que a box2d nos da e desenharemos na tela
       float angulo = body.getAngle(); //angulo do corpo
       pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
     
       pushMatrix();
-      translate(100+delta.x,200+delta.y); //imagem sera deslocada
+      translate(100,200); //imagem sera deslocada
       rotate(-angulo); //rodaremos no angulo dado pela box2d
       fill(127); //colorindo
       stroke(0);//borda
@@ -52,27 +52,31 @@ class Personagem {
     }
     
     void walk(int ncontato){
+       
        vel = body.getLinearVelocity();
        pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
 
-      if((key == 'a' || key == 'A') && vel.x > -10){ //limito a velocidade maxima
+      if(keys[A] == true/*(key == 'a' || key == 'A')*/ && vel.x > -15){ //limito a velocidade maxima
         body.applyForce(new Vec2 (-400,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
+        keys[A]=false;
       }
-      if((key == 'd' || key == 'D') && vel.x < 10){
+      if(keys[D] == true /*(key == 'd' || key == 'D')*/ && vel.x < 15){
         body.applyForce(new Vec2(400,0), body.getWorldCenter());
+        keys[D] = false;
       }
-      if((key == 's' || key == 'S')){
+      if(keys[S] == true/*(key == 's' || key == 'S')*/){
         if(ncontato != 0) //so pode frear se estiver no chao
           body.setLinearVelocity(new Vec2(0,vel.y));
+          keys[S] = false;
       }
-      if((key == 'w' || key == 'W') && ncontato >= 1 && vel.y < 5){ //se estiver encostando em algo no chao
-        body.applyLinearImpulse(new Vec2(vel.x,175), body.getWorldCenter());
+      if(keys[W] == true /*(key == 'w' || key == 'W')*/ && ncontato >= 1 && vel.y < 5){ //se estiver encostando em algo no chao
+        body.applyLinearImpulse(new Vec2(vel.x,195), body.getWorldCenter());
+        keys[W] = false;
       }
       
       if(key == 'r' || key =='R'){
         body.setTransform(new Vec2(box2d.coordPixelsToWorld(70,50)),0);
         body.setLinearVelocity(new Vec2(0,0));
       }
-      key = '^';//limpando a tecla, nao achei modo melhor
     }
 }

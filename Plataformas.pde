@@ -10,7 +10,7 @@ class Plataform {
   //limites de movimento da plataforma
   Vec2 max;  //maximo valor para posicao (x,y)
   Vec2 min; //minimo valor para posicao (x,y)
-  
+
   // Criando um variavel do tipo Body para guardar as informacoes
   Body b;
 
@@ -52,12 +52,7 @@ class Plataform {
   }
   
   // Desenhando
-  void display(Vec2 posAntPerso, Vec2 posAtuPerso, boolean naPlataforma) {
-    Vec2 delta = new Vec2((posAtuPerso.x - posAntPerso.x),(posAtuPerso.y - posAntPerso.y)); //vetor que recebera a variacao da distancia do personagem em x e y
-    max.x-=delta.x; //ajustando o max apos deslocamento do personagem
-    min.x-=delta.x; //ajustando o min apos deslocamento do personagem
-    max.y-=delta.y;
-    min.y-=delta.y;
+  void display() {
     Vec2 pos = box2d.getBodyPixelCoord(b);
     Vec2 velAtual = b.getLinearVelocity();
     
@@ -71,19 +66,10 @@ class Plataform {
       b.setLinearVelocity(new Vec2(velAtual.x,+v.y));
     if(pos.y >= min.y)
       b.setLinearVelocity(new Vec2(velAtual.x,-v.y));
-    
-    
-    if(naPlataforma) //essa booleana foi adicionada pois se o personagem estiver em cima da plataforma seu deslocamento em relacao a ela deve ser 0!
-      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x-0,pos.y-0)),0);
       
-    else
-      b.setTransform(new Vec2(box2d.coordPixelsToWorld(pos.x-delta.x,pos.y-delta.y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem, como objeto se move
-      //nao pode ser em x, se não fixara ele a todo momento na posicao inicial.
-        
     fill(255);
     stroke(0);
     rectMode(CENTER);
-    rect(pos.x+30,pos.y+150,w,h);
-    println(box2d.getBodyPixelCoord(b));
+    rect(pos.x,pos.y,w,h);
   }
 }

@@ -51,6 +51,6 @@ class Boundary {
     fill(0);
     stroke(0);
     rectMode(CENTER);
-    rect(x+30,y+150,w,h);//100-posicao inicial x e 180 é 200-posicao inicial y do personagem
+    rect(x,y,w,h);
   }
 }
