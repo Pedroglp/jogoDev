@@ -6,7 +6,6 @@
 //Respectivamente seus argumentos sao: posicao na tela x, posicao na tela y, comprimento, espessura
 //Plataform eh a funcao(classe?) construtora para plataformas moveis, tanto em x quanto em y
 //Respectivamente seus argumentos sao: posicao na tela x, posicao na tela y, comprimento, espessura, Velocidade de movimento, vetor(xmin,ymin), vetor(xmax,ymax)
-//>>>OBS PLATAFORMAS COM MOVIMENTO EM Y IMPLEMENTADA E NAO TESTADA<<<<
 
 void criarCenario(int fase){
     switch(fase){
@@ -16,14 +15,10 @@ void criarCenario(int fase){
       boundaries.add(new Boundary(1200+75, height-10, 500, 20)); //segundo segmento pos plataforma
       boundaries.add(new Boundary(1600+100, height-10-60, 300, 20)); //segmento elevado
       boundaries.add(new Boundary(2075+50,height-10,500,20)); //pos segmento elevado
-      /*boundaries.add(new Boundary(230,350, 100, 10)); //segmento elevado
-      boundaries.add(new Boundary(375, height-10, 150, 20)); // segunda parte do chao pos seguimento elevado
-      boundaries.add(new Boundary(675, height-10, 150, 20)); // terceira parte
-      boundaries.add(new Boundary(5, height/2 -10, 20, height)); //parede atras do personagem*/
   
       plataforms = new ArrayList<Plataform>();
-      plataforms.add(new Plataform(625, height-10, 150,20,new Vec2(4,0),new Vec2(625,150),new Vec2(950,150)));
-      /*plataforms.add(new Plataform(786, height-10, 70,20,new Vec2(0,2),new Vec2(566,150),new Vec2(566,height-5)));*/
+      plataforms.add(new Plataform(625, height-10, 150,20,new Vec2(4,0),new Vec2(625,150),new Vec2(950,150)));//primeira plataforma
+      plataforms.add(new Plataform(2410, height-10, 70,20,new Vec2(0,2),new Vec2(566,270),new Vec2(566,height-10)));//segunda plataforma
       break;
   }
 }

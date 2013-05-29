@@ -21,7 +21,6 @@ Vec2 posAtuPerso; //posicao pos walk
 Vec2 distancia = new Vec2(0,0);
 //Vec2 velPerso; //velocidade personagem
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
-boolean naPlataforma = false; //necessario para tratar o movimento do personagem em cima da plataforma
 //int contadordeloops = 0; //para debug
 int fase = 1; //fase começa em 1 por padrao
 Vec2 velPerso;
@@ -110,9 +109,6 @@ void draw() {
     if (((o1.getClass() == Boundary.class || o1.getClass() == Plataform.class) && o2.getClass() == Personagem.class) 
                                           || ((o2.getClass() == Boundary.class || o2.getClass() == Plataform.class) && o1.getClass() == Personagem.class)){
     ncontato+=1; //se ele encostar numa parede ou a parede nele aumentamos o numero de objetos em contato com o personagem
-    if(o1.getClass() == Plataform.class || o2.getClass() == Plataform.class){
-      naPlataforma = true; //entro na plataforma
-    }
   }
 }
   
@@ -131,9 +127,6 @@ void endContact(Contact cp) {
     if (((o1.getClass() == Boundary.class || o1.getClass() == Plataform.class) && o2.getClass() == Personagem.class) 
                                           || ((o2.getClass() == Boundary.class || o2.getClass() == Plataform.class) && o1.getClass() == Personagem.class)){
      ncontato-=1; //se a contato entre o chao/plataforma eo personagem acabou, tiramos 1 numero de contatos
-     if(o1.getClass() == Plataform.class || o2.getClass() == Plataform.class){
-      naPlataforma = false; //saiu da plataforma
-    }
   }
 }
 

@@ -62,9 +62,9 @@ class Plataform {
       b.setLinearVelocity(new Vec2(v.x,velAtual.y));
     
     //para os limites de y preste atencao no sistema de coordenadas de pixels!
-    if(pos.y <= max.y)
-      b.setLinearVelocity(new Vec2(velAtual.x,+v.y));
-    if(pos.y >= min.y)
+    if(pos.y >= max.y)
+      b.setLinearVelocity(new Vec2(velAtual.x,v.y));
+    if(pos.y <= min.y)
       b.setLinearVelocity(new Vec2(velAtual.x,-v.y));
       
     fill(255);
