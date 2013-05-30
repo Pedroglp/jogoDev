@@ -23,14 +23,14 @@ Vec2 distancia = new Vec2(0,0);
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 //int contadordeloops = 0; //para debug
 int fase = 1; //fase começa em 1 por padrao
-Vec2 velPerso;
 
 /*USADAS PARA LEITURA DE TECLAS*/
-boolean[]keys = new boolean[4];
+boolean[]keys = new boolean[5];
 final int A = 0;
 final int W = 1;
 final int S = 2;
 final int D = 3;
+final int R = 4;
 char tecla;
        
 
@@ -39,17 +39,21 @@ ArrayList<Boundary> boundaries; //uma array que guardara todos os segmentos de c
 
 ArrayList<Plataform> plataforms; //uma array que guardara todos as plataformas do cenario
 
+
+
+Mover[] movers = new Mover[25];
+
 void setup() {
-  size(1000, 400);
+  size(displayWidth, displayHeight); //tamanho da tela do usuario
+  if (frame != null) {
+    frame.setResizable(true);
+  }
   // iniciando a library e criando um mundo
   box2d = new PBox2D(this); //iniciando box2d
   box2d.createWorld(); //criando um "mundo fisico"
-  box2d.setGravity(0, -10); //gravidade -20m/s, antes era 10 mas falaram que estava muito lunar
-  // inicia o leitor de colisao
-  box2d.listenForCollisions();
-  // criacao de personagem
-  //personagem = new Personagem(70,50);
-  
+  box2d.setGravity(0, -20);//gravidade -10m/s
+  box2d.listenForCollisions();//inicia o leitor de colisao
+  frameRate(80);
 }
 
 //essa sera a funcao utilizada para desenhar os quadros e dar o step (passo) no universo fisico
@@ -60,8 +64,9 @@ void draw() {
   
   if(primeiroLoop == true){
     //cria personagem
-    personagem = new Personagem(70,50);
-    posAntPerso = posAtuPerso = new Vec2(70,50); //personagem inicia em 70,50, logo essa eh sua primeira posicao anterior
+    personagem = new Personagem(70,200);
+    posAntPerso = posAtuPerso = new Vec2(70,200); //personagem inicia em 70,50, logo essa eh sua primeira posicao anterior.
+    distancia = new Vec2(0,0); //reset/setdistancia percorrida igual a zero.
     criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
     primeiroLoop = false; //depois disso nao ser mais o primeiro loop
   }
@@ -70,19 +75,22 @@ void draw() {
   personagem.walk(ncontato); //chama a funcao de andar do personagem
   posAtuPerso = personagem.pos; //pegando apos ele se mover
   Vec2 delta = new Vec2((posAtuPerso.x - posAntPerso.x),(posAtuPerso.y - posAntPerso.y));
+  //vamos somando a distancia pecorrida do momento a distancia total que devemos transladar a camera
   distancia.x+=delta.x;
   distancia.y+=delta.y;
   
   personagem.display(); //roda a animacao do personagem
   
   pushMatrix();
-  translate(30-distancia.x,150-distancia.y); //deslocaremos a "camera" na distancia total percorrida pelo personagem em x e y. Lembrando que nossa camera eh centrada em 200,200.
+  translate((width/2)-70-distancia.x,(height/2)-200-distancia.y); //deslocaremos a "camera" em x em 70-distancia.x porque : queremos a camera centrada no personagem,logo -70.
+  //Queremos que os objetos sejam "passados" para trás, logo -distancia.x. O mesmo vale para Y. Lembrando que fixamos a camera em 100,200 no personagem.
   for (Boundary wall: boundaries) {
     wall.display();
   }
   for (Plataform plat: plataforms) {
     plat.display();
-  }
+  }  
+  
   popMatrix();
   /*DEBUG
   contadordeloops++;
@@ -143,6 +151,7 @@ void endContact(Contact cp) {
 
 void keyPressed() {
     tecla = key;
+    
     switch(tecla) {
       case 'A':
       case 'a':
@@ -163,8 +172,13 @@ void keyPressed() {
       case 'd':
           keys[D] = true;
           //println("d pressionado");
-          break;       
-    } 
+          break;
+      case 'R':
+      case 'r': 
+          keys[R] = true;
+          //println("r pressionado");
+          break;         
+    }
 }
 
 void keyReleased(){
@@ -189,6 +203,11 @@ void keyReleased(){
       case 'd': 
           keys[D] = false;
           //println("d solto");
-          break;       
+          break;
+      case 'R':
+      case 'r': 
+          keys[R] = false;
+          //println("r solto");
+          break;   
     }
 }    

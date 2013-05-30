@@ -15,10 +15,12 @@ void criarCenario(int fase){
       boundaries.add(new Boundary(1200+75, height-10, 500, 20)); //segundo segmento pos plataforma
       boundaries.add(new Boundary(1600+100, height-10-60, 300, 20)); //segmento elevado
       boundaries.add(new Boundary(2075+50,height-10,500,20)); //pos segmento elevado
+      boundaries.add(new Boundary(2695,height-195,500,20));
   
       plataforms = new ArrayList<Plataform>();
       plataforms.add(new Plataform(625, height-10, 150,20,new Vec2(4,0),new Vec2(625,150),new Vec2(950,150)));//primeira plataforma
-      plataforms.add(new Plataform(2410, height-10, 70,20,new Vec2(0,2),new Vec2(566,270),new Vec2(566,height-10)));//segunda plataforma
+      plataforms.add(new Plataform(2410, height-10, 70,20,new Vec2(0,4),new Vec2(566,550),new Vec2(566,height-10)));//segunda plataforma
+   
       break;
   }
 }

@@ -3,6 +3,7 @@ class Personagem {
   float altura, largura;
   Vec2 pos;
   Vec2 vel;
+  boolean delete = false;
 
   Personagem(float x, float y){
     altura = 40;
@@ -21,7 +22,7 @@ class Personagem {
     float box2dAltura = box2d.scalarPixelsToWorld(altura/2); //o mesmo que acima
     //Porque dividido por 2? Simples, para o box2d as dimensoes dos objetos sao dadas do seu centro espacial ate a seu fim. Logo, seria
     //a metade do que nos normalmente adotamos como largura e altura
-    ps.setAsBox(box2dLargura, box2dAltura); //setamos como um caixa com as dimensoes dadas entre parenteses
+    ps.setAsBox(box2dAltura, box2dLargura); //setamos como um caixa com as dimensoes dadas entre parenteses
     
     FixtureDef fd = new FixtureDef(); //Entao, definimos o tipo de corpo, o tipo geometrico agora faltam as especificacoes fisicas deste.
     //Nao encontrei uma traducao para fixture, mas creio que seriam como "propriedades" algo do tipo.
@@ -38,9 +39,15 @@ class Personagem {
     void display(){ //aqui sera a parte em que pegaremos os dados que a box2d nos da e desenharemos na tela
       float angulo = body.getAngle(); //angulo do corpo
       pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
+      
+      if(pos.y >= height*2 || delete){ //se a altura que x esta for maior do que o maximo de morte ou delete verdadeiro.
+        box2d.destroyBody(body);
+        //delay(2000);
+        primeiroLoop = true;
+      }
     
       pushMatrix();
-      translate(100,200); //imagem sera deslocada
+      translate(width/2,height/2); //imagem sera deslocada0);
       rotate(-angulo); //rodaremos no angulo dado pela box2d
       fill(127); //colorindo
       stroke(0);//borda
@@ -55,28 +62,40 @@ class Personagem {
        
        vel = body.getLinearVelocity();
        pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
-
+       
       if(keys[A] == true/*(key == 'a' || key == 'A')*/ && vel.x > -15){ //limito a velocidade maxima
-        body.applyForce(new Vec2 (-400,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
-        keys[A]=false;
+        body.applyForce(new Vec2 (-1500,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
       }
       if(keys[D] == true /*(key == 'd' || key == 'D')*/ && vel.x < 15){
-        body.applyForce(new Vec2(400,0), body.getWorldCenter());
-        keys[D] = false;
+        body.applyForce(new Vec2(1500,0), body.getWorldCenter());
       }
       if(keys[S] == true/*(key == 's' || key == 'S')*/){
         if(ncontato != 0) //so pode frear se estiver no chao
           body.setLinearVelocity(new Vec2(0,vel.y));
-          keys[S] = false;
       }
       if(keys[W] == true /*(key == 'w' || key == 'W')*/ && ncontato >= 1 && vel.y < 5){ //se estiver encostando em algo no chao
-        body.applyLinearImpulse(new Vec2(vel.x,195), body.getWorldCenter());
-        keys[W] = false;
+        body.applyLinearImpulse(new Vec2(vel.x,300), body.getWorldCenter());
       }
       
-      if(key == 'r' || key =='R'){
-        body.setTransform(new Vec2(box2d.coordPixelsToWorld(70,50)),0);
-        body.setLinearVelocity(new Vec2(0,0));
+      if(keys[R] == true/*key == 'r' || key =='R'*/){
+         delete=true;
       }
     }
+    
+  Vec2 attract(Mover m) {
+    float G = 100; // Strength of force
+    // clone() makes us a copy
+    Vec2 pos = body.getWorldCenter();    
+    Vec2 moverPos = m.body.getWorldCenter();
+    // Vector pointing from mover to attractor
+    Vec2 force = pos.sub(moverPos);
+    float distance = force.length();
+    // Keep force within bounds
+    distance = constrain(distance,1,5);
+    force.normalize();
+    // Note the attractor's mass is 0 because it's fixed so can't use that
+    float strength = (G * 1 * m.body.m_mass) / (distance * distance); // Calculate gravitional force magnitude
+    force.mulLocal(strength);         // Get force vector --> magnitude * direction
+    return force;
+  }
 }
