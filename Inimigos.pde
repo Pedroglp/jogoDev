@@ -4,14 +4,21 @@
 
 // Showing how to use applyForce() with box2d
 
-class Mover {
+class Inimigo {
 
   // We need to keep track of a Body and a radius
   Body body;
   float r;
+  float x;
+  float y;
+  int type;
+  float limiteMin = 300000;
+  float limiteMax = 300000;
+  Vec2 pos;
 
-  Mover(float r_, float x, float y) {
+  Inimigo(float r_, float x, float y, int type_){
     r = r_;
+    type = type_;
     // Define a body
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
@@ -36,22 +43,28 @@ class Mover {
 
     body.setLinearVelocity(new Vec2(random(-5,5),random(-5,-5)));
     body.setAngularVelocity(random(-1,1));
+    
+    body.setUserData(this);
   }
 
   void applyForce(Vec2 v) {
+    pos = box2d.getBodyPixelCoord(body);
+    if(pos.x < limiteMin)
+      body.setLinearVelocity(new Vec2(1,0));
+    if(pos.x > limiteMax)
+      body.setLinearVelocity(new Vec2(-1,0));
     body.applyForce(v, body.getWorldCenter());
   }
 
-
   void display() {
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getBodyPixelCoord(body);
+    pos = box2d.getBodyPixelCoord(body);
     // Get its angle of rotation
     float a = body.getAngle();
     pushMatrix();
     translate(pos.x,pos.y);
     rotate(a);
-    fill(127);
+    fill(255,0,0);
     stroke(0);
     strokeWeight(2);
     ellipse(0,0,r*2,r*2);

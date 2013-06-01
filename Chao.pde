@@ -47,7 +47,6 @@ class Boundary {
 
   // Desenhando
   void display() {
-    //b.setTransform(new Vec2(box2d.coordPixelsToWorld(x,y)),0); //isso é necessario para posicionar o desenho em relacao ao personagem
     fill(0);
     stroke(0);
     rectMode(CENTER);
