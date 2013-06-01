@@ -51,7 +51,7 @@ void setup() {
   // iniciando a library e criando um mundo
   box2d = new PBox2D(this); //iniciando box2d
   box2d.createWorld(); //criando um "mundo fisico"
-  box2d.setGravity(0, -10);//gravidade -10m/s
+  box2d.setGravity(0, -12);//gravidade -10m/s
   box2d.listenForCollisions();//inicia o leitor de colisao
   frameRate(120);//aumentei a frame rate, nao entendi em que isso mudaria no jogo caso coloca-se < 120, mas de alguma forma acelerou os numeros de acoes que box2d faz em 1 seg.
 }

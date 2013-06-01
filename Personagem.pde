@@ -70,13 +70,13 @@ class Personagem {
        
       if(keys[A] == true && vel.x > -15){ //limito a velocidade maxima
         if(ncontato == 0)// no ar estarei limitando a velocidade de movimento
-          body.applyForce(new Vec2 (-400,0), body.getWorldCenter());
+          body.applyForce(new Vec2 (-350,0), body.getWorldCenter());
         else
           body.applyForce(new Vec2 (-900,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
       }
       if(keys[D] == true && vel.x < 15){
         if(ncontato == 0)// no ar estarei limitando a velocidade de movimento
-          body.applyForce(new Vec2 (400,0), body.getWorldCenter());
+          body.applyForce(new Vec2 (350,0), body.getWorldCenter());
         else
           body.applyForce(new Vec2 (900,0), body.getWorldCenter()); //a força aplicada so servira para sair da inercia, quanto maior mais rapido ele ganhara aceleracao
       }

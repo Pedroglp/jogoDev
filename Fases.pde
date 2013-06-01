@@ -11,18 +11,18 @@ void criarCenario(int fase){
     switch(fase){
     case 1:
       boundaries = new ArrayList<Boundary>(); //criamos um array que guardara todas as trilhas criadas
-      boundaries.add(new Boundary(250+50,height-10, 500, 20)); //adicionamos a primeira parte do chao antes da plataforma
-      boundaries.add(new Boundary(1200+75, height-10, 500, 20)); //segundo segmento pos plataforma
-      boundaries.add(new Boundary(1600+100, height-10-60, 300, 20)); //segmento elevado
-      boundaries.add(new Boundary(2075+50,height-10,500,20)); //pos segmento elevado
-      boundaries.add(new Boundary(2695,height-195,500,20));
+      boundaries.add(new Boundary(250+50,height+100, 500, 400)); //adicionamos a primeira parte do chao antes da plataforma
+      boundaries.add(new Boundary(1200+75, height+100, 500, 400)); //segundo segmento pos plataforma
+      boundaries.add(new Boundary(1600+75, height+90, 300, 500)); //segmento elevado
+      boundaries.add(new Boundary(2075,height+100,500,400)); //pos segmento elevado
+      boundaries.add(new Boundary(2645,height-100,500,400)); //pos plataforma em y
   
       plataforms = new ArrayList<Plataform>();
-      plataforms.add(new Plataform(625, height-10, 150,20,new Vec2(4,0),new Vec2(625,150),new Vec2(950,150)));//primeira plataforma
-      plataforms.add(new Plataform(2410, height-10, 70,20,new Vec2(0,4),new Vec2(566,550),new Vec2(566,height-10)));//segunda plataforma
+      plataforms.add(new Plataform(625, height-90, 150,20,new Vec2(6,0),new Vec2(625,150),new Vec2(950,150)));//primeira plataforma
+      plataforms.add(new Plataform(2360, height-10, 70,20,new Vec2(0,4),new Vec2(566,480),new Vec2(566,height-90)));//segunda plataforma
       
       inimigos = new ArrayList<Inimigo>();
-      inimigos.add(new Inimigo(20,520,727,1));
+      inimigos.add(new Inimigo(20,520,650,1));
       break;
     }
 }

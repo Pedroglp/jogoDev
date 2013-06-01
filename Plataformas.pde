@@ -32,7 +32,7 @@ class Plataform {
     sd.setAsBox(box2dW, box2dH);
     
     FixtureDef fd = new FixtureDef();
-    fd.friction = 0.8; //se nao colocarmos friction o corpo nao ira se aderir a plataforma
+    fd.friction = 0.95; //se nao colocarmos friction o corpo nao ira se aderir a plataforma
     fd.density = 1; //densidade
     fd.shape=sd; //definido a shape para fixture
 
