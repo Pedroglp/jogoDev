@@ -6,15 +6,14 @@ class Personagem {
   boolean delete = false;
 
   Personagem(float x, float y){
-    altura = 40;
+    altura = 60;
     largura = 40;
     
     BodyDef bd = new BodyDef(); //criando as caracteristicas de um corpo do nosso personagem
     bd.type = BodyType.DYNAMIC; //Sera um corpo dinamico (com movimento)
-    //bd.fixedRotation = true;//sem rotação
+    bd.fixedRotation = true;//sem rotação
     bd.linearDamping = 0.03;//arrasto no ar.
-    //if(!criado)
-      bd.position.set(box2d.coordPixelsToWorld(x,y)); //essa sera a posicao do nosso corpo. Perceba que ha uma conversao do espaco fisico
+    bd.position.set(box2d.coordPixelsToWorld(x,y)); //essa sera a posicao do nosso corpo. Perceba que ha uma conversao do espaco fisico
     // para o espaco "pixelar". Isso se deve ao padrao de cada lib. Na box 2d, centro do sistema cartesiano eh dado no centro da tela (x=0,y=0)
     //ja no sistema grafico da processing eh dado no canto superior esquerdo.
     body = box2d.createBody(bd); // atribuimos ao corpo do personagem, as definicoes do corpo criado.
@@ -24,13 +23,13 @@ class Personagem {
     float box2dAltura = box2d.scalarPixelsToWorld(altura/2); //o mesmo que acima
     //Porque dividido por 2? Simples, para o box2d as dimensoes dos objetos sao dadas do seu centro espacial ate a seu fim. Logo, seria
     //a metade do que nos normalmente adotamos como largura e altura
-    ps.setAsBox(box2dAltura, box2dLargura); //setamos como um caixa com as dimensoes dadas entre parenteses
+    ps.setAsBox(box2dLargura, box2dAltura); //setamos como um caixa com as dimensoes dadas entre parenteses
     
     FixtureDef fd = new FixtureDef(); //Entao, definimos o tipo de corpo, o tipo geometrico agora faltam as especificacoes fisicas deste.
     //Nao encontrei uma traducao para fixture, mas creio que seriam como "propriedades" algo do tipo.
     fd.shape = ps; //Informamos que o formato do corpo sera o formato ps criado. Isso porque, a box2d ira utilizar este para calular informacoes
     //uteis como: Massa, centro de massa, momento angular e etc.
-    fd.density = 3.5; // definindo a densidade, veja, nao damos uma massa e sim a densidade, a massa sera calculada usando as dimensoes e densidade
+    fd.density = 3.0; // definindo a densidade, veja, nao damos uma massa e sim a densidade, a massa sera calculada usando as dimensoes e densidade
     fd.friction = 0.45; //coeficiente de atrito
     fd.restitution = 0.1; //coeficiente de restituicao
     
@@ -58,7 +57,7 @@ class Personagem {
       stroke(0);//borda
       strokeWeight(2);//espesura da borda
       rectMode(CENTER);
-      rect(0,0,altura,largura);//criando retangulo
+      rect(0,0,largura,altura);//criando retangulo
       popMatrix();
    
     }

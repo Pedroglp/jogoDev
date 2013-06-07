@@ -1,6 +1,6 @@
 //CONTROLE DE CHOQUES
 
-void beginContact(Contact cp) {
+void beginContact(Contact cp){
   // Pega as duas fixtures do que se chocou. Observe, o contato acontece entre fixtures e nao entre bodies
   Fixture f1 = cp.getFixtureA();
   Fixture f2 = cp.getFixtureB();
@@ -12,10 +12,14 @@ void beginContact(Contact cp) {
   Object o1 = b1.getUserData(); //o tipo (classe) Objeto de o21 sera o user Data do Body no qual houve contato
   Object o2 = b2.getUserData(); //o tipo (classe) Objeto de o2 sera o user Data do Body no qual houve contato
 
+  //ANALISE DE COLISAO ENVOLVENDO PERSONAGEM 
   if (((o1.getClass() == Boundary.class || o1.getClass() == Plataform.class) && o2.getClass() == Personagem.class) 
     || ((o2.getClass() == Boundary.class || o2.getClass() == Plataform.class) && o1.getClass() == Personagem.class)) {
     ncontato+=1; //se ele encostar numa parede ou a parede nele aumentamos o numero de objetos em contato com o personagem
   }
+  
+ //FIM DA ANALISE DE COLISAO DO PERSONAGEM 
+  
   if (o1.getClass() == Boundary.class && o2.getClass() == Inimigo.class) { //obtendo contato entre inimigos e chao
     Inimigo inimigo = (Inimigo) o2; //atribuindo as classes devidamente
     Boundary chao = (Boundary) o1;
