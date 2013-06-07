@@ -22,7 +22,10 @@ void criarCenario(int fase){
       plataforms.add(new Plataform(2360, height-10, 70,20,new Vec2(0,4),new Vec2(566,480),new Vec2(566,height-90)));//segunda plataforma
       
       inimigos = new ArrayList<Inimigo>();
-      inimigos.add(new Inimigo(20,520,650,1));
+      inimigos.add(new Inimigo(20,520,height-120,1));
+      break;
+    case 2:
+      
       break;
     }
 }

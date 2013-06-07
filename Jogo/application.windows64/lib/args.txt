@@ -1,0 +1,3 @@
+
+Jogo
+Jogo.jar,core.jar,jogl-all.jar,gluegen-rt.jar,jogl-all-natives-windows-amd64.jar,gluegen-rt-natives-windows-amd64.jar,jbox2d_2.1.2_ds_v2.jar,pbox2d.jar,slf4j-api-1.6.4.jar,slf4j-nop-1.6.4.jar
