@@ -44,12 +44,12 @@ Personagem personagem;
 int ncontato = 0; //numero de contatos entre certa shape
 Vec2 posAntPerso; //posicao antes do walk
 Vec2 posAtuPerso; //posicao pos walk
-Vec2 posInicial = new Vec2 (70,550);
+Vec2 posInicial;
 Vec2 distancia = new Vec2(0, 0);
 //Vec2 velPerso; //velocidade personagem
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 //int contadordeloops = 0; //para debug
-int fase = 1; //fase come\u00e7a em 1 por padrao
+int fase = 2; //fase come\u00e7a em 1 por padrao
 
 /*USADAS PARA LEITURA DE TECLAS*/
 boolean[]keys = new boolean[5];
@@ -59,8 +59,6 @@ final int S = 2;
 final int D = 3;
 final int R = 4;
 char tecla;
-
-
 
 
 /*USADAS PARA CONSTRUCAO DO CENARIO*/
@@ -90,11 +88,11 @@ public void draw() {
   box2d.step(); // a cada vez que draw fizer 1 loop, sera feito um loop nas acoes da box2d
 
   if (primeiroLoop == true) {
+    criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
     //cria personagem
     personagem = new Personagem(posInicial.x, posInicial.y);
     posAntPerso = posAtuPerso = new Vec2(posInicial.x, posInicial.y); //personagem inicia em 70,50, logo essa eh sua primeira posicao anterior.
     distancia = new Vec2(0, 0); //reset/setdistancia percorrida igual a zero.
-    criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
     primeiroLoop = false; //depois disso nao ser mais o primeiro loop
   }
   else
@@ -260,6 +258,7 @@ public void endContact(Contact cp) {
 public void criarCenario(int fase){
     switch(fase){
     case 1:
+      posInicial = new Vec2 (70,550);//setamos posicao inicial
       boundaries = new ArrayList<Boundary>(); //criamos um array que guardara todas as trilhas criadas
       boundaries.add(new Boundary(250+50,height+100, 500, 400,0)); //adicionamos a primeira parte do chao antes da plataforma
       boundaries.add(new Boundary(1200+75, height+100, 500, 400,0)); //segundo segmento pos plataforma
@@ -274,8 +273,19 @@ public void criarCenario(int fase){
       inimigos = new ArrayList<Inimigo>();
       inimigos.add(new Inimigo(20,520,height-120,1));
       break;
-    case 2:
+    case 2: //aqui usarei tudo em relacao ao tamanho da tela para tornar o codigo mais portatil.
+      posInicial = new Vec2 (0.1f*width,0.6595f*height); //nao estranhe o valor, fui ajustando visualmente.
+      boundaries = new ArrayList<Boundary>();
+      boundaries.add(new Boundary(0.1f*width,0.8f*height,0.6f*width,0.2f*height,0));
+      boundaries.add(new Boundary(1.075f*width, 0.8f*height, 0.6f*width, 0.2f*height,0));
+      boundaries.add(new Boundary(1.375f*width, 0.8f*height, 0.6f*width, 0.2f*height, 60));
+      boundaries.add(new Boundary(1.74518f*width, 0.6415f*height, 0.2f*width, 0.2f*height,0));
+      boundaries.add(new Boundary(2.115f*width, 0.8f*height, 0.6f*width, 0.2f*height, -60));
       
+      plataforms = new ArrayList<Plataform>();
+      plataforms.add(new Plataform(0.475f*width,0.725f*height,0.15f*width, 0.05f*height, new Vec2(5,0), new Vec2(0.475f*width,0.725f*height), new Vec2(0.7f*width,0.725f*height)));
+      
+      inimigos = new ArrayList<Inimigo>();
       break;
     }
 }
@@ -370,12 +380,12 @@ class Personagem {
   boolean delete = false;
 
   Personagem(float x, float y){
-    altura = 60;
-    largura = 40;
+    altura = 50;
+    largura = 50;
     
     BodyDef bd = new BodyDef(); //criando as caracteristicas de um corpo do nosso personagem
     bd.type = BodyType.DYNAMIC; //Sera um corpo dinamico (com movimento)
-    bd.fixedRotation = true;//sem rota\u00e7\u00e3o
+    //bd.fixedRotation = true;//sem rota\u00e7\u00e3o
     bd.linearDamping = 0.03f;//arrasto no ar.
     bd.position.set(box2d.coordPixelsToWorld(x,y)); //essa sera a posicao do nosso corpo. Perceba que ha uma conversao do espaco fisico
     // para o espaco "pixelar". Isso se deve ao padrao de cada lib. Na box 2d, centro do sistema cartesiano eh dado no centro da tela (x=0,y=0)

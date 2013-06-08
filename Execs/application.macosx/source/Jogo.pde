@@ -19,12 +19,12 @@ Personagem personagem;
 int ncontato = 0; //numero de contatos entre certa shape
 Vec2 posAntPerso; //posicao antes do walk
 Vec2 posAtuPerso; //posicao pos walk
-Vec2 posInicial = new Vec2 (70,550);
+Vec2 posInicial;
 Vec2 distancia = new Vec2(0, 0);
 //Vec2 velPerso; //velocidade personagem
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 //int contadordeloops = 0; //para debug
-int fase = 1; //fase começa em 1 por padrao
+int fase = 2; //fase começa em 1 por padrao
 
 /*USADAS PARA LEITURA DE TECLAS*/
 boolean[]keys = new boolean[5];
@@ -34,8 +34,6 @@ final int S = 2;
 final int D = 3;
 final int R = 4;
 char tecla;
-
-
 
 
 /*USADAS PARA CONSTRUCAO DO CENARIO*/
@@ -65,11 +63,11 @@ void draw() {
   box2d.step(); // a cada vez que draw fizer 1 loop, sera feito um loop nas acoes da box2d
 
   if (primeiroLoop == true) {
+    criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
     //cria personagem
     personagem = new Personagem(posInicial.x, posInicial.y);
     posAntPerso = posAtuPerso = new Vec2(posInicial.x, posInicial.y); //personagem inicia em 70,50, logo essa eh sua primeira posicao anterior.
     distancia = new Vec2(0, 0); //reset/setdistancia percorrida igual a zero.
-    criarCenario(fase); //criamos o cenario da fase que esta na variavel fase
     primeiroLoop = false; //depois disso nao ser mais o primeiro loop
   }
   else

@@ -6,12 +6,12 @@ class Personagem {
   boolean delete = false;
 
   Personagem(float x, float y){
-    altura = 60;
-    largura = 40;
+    altura = 50;
+    largura = 50;
     
     BodyDef bd = new BodyDef(); //criando as caracteristicas de um corpo do nosso personagem
     bd.type = BodyType.DYNAMIC; //Sera um corpo dinamico (com movimento)
-    bd.fixedRotation = true;//sem rotação
+    //bd.fixedRotation = true;//sem rotação
     bd.linearDamping = 0.03;//arrasto no ar.
     bd.position.set(box2d.coordPixelsToWorld(x,y)); //essa sera a posicao do nosso corpo. Perceba que ha uma conversao do espaco fisico
     // para o espaco "pixelar". Isso se deve ao padrao de cada lib. Na box 2d, centro do sistema cartesiano eh dado no centro da tela (x=0,y=0)
