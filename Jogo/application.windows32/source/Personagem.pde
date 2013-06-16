@@ -6,7 +6,7 @@ class Personagem {
   boolean delete = false;
 
   Personagem(float x, float y){
-    altura = 50;
+    altura = 75;
     largura = 50;
     
     BodyDef bd = new BodyDef(); //criando as caracteristicas de um corpo do nosso personagem
@@ -29,7 +29,7 @@ class Personagem {
     //Nao encontrei uma traducao para fixture, mas creio que seriam como "propriedades" algo do tipo.
     fd.shape = ps; //Informamos que o formato do corpo sera o formato ps criado. Isso porque, a box2d ira utilizar este para calular informacoes
     //uteis como: Massa, centro de massa, momento angular e etc.
-    fd.density = 3.0; // definindo a densidade, veja, nao damos uma massa e sim a densidade, a massa sera calculada usando as dimensoes e densidade
+    fd.density = 2.0; // definindo a densidade, veja, nao damos uma massa e sim a densidade, a massa sera calculada usando as dimensoes e densidade
     fd.friction = 0.45; //coeficiente de atrito
     fd.restitution = 0.1; //coeficiente de restituicao
     
@@ -41,14 +41,6 @@ class Personagem {
       float angulo = body.getAngle(); //angulo do corpo
       pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
       
-      if(pos.y >= height*2 || delete){ //se a altura que x esta for maior do que o maximo de morte ou delete verdadeiro.
-        box2d.destroyBody(body);//deletando corpo fisico do personagem
-        for(Inimigo inimi: inimigos){
-          box2d.destroyBody(inimi.body);
-        }
-        //delay(2000);
-        primeiroLoop = true;
-      }
     
       pushMatrix();
       translate(width/2,height/2); //imagem sera deslocada0);

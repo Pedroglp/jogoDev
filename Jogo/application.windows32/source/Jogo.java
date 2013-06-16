@@ -50,6 +50,7 @@ Vec2 distancia = new Vec2(0, 0);
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 //int contadordeloops = 0; //para debug
 int fase = 2; //fase come\u00e7a em 1 por padrao
+PImage imgBackground;
 
 /*USADAS PARA LEITURA DE TECLAS*/
 boolean[]keys = new boolean[5];
@@ -78,7 +79,7 @@ public void setup() {
   box2d.createWorld(); //criando um "mundo fisico"
   box2d.listenForCollisions();//inicia o leitor de colisao
   box2d.setGravity(0, -10);//gravidade -10m/s
-  frameRate(120);//aumentei a frame rate, nao entendi em que isso mudaria no jogo caso coloca-se < 120, mas de alguma forma acelerou os numeros de acoes que box2d faz em 1 seg.
+  frameRate(60);//aumentei a frame rate, nao entendi em que isso mudaria no jogo caso coloca-se < 120, mas de alguma forma acelerou os numeros de acoes que box2d faz em 1 seg.
 }
 
 //essa sera a funcao utilizada para desenhar os quadros e dar o step (passo) no universo fisico
@@ -103,12 +104,20 @@ public void draw() {
   //vamos somando a distancia pecorrida do momento a distancia total que devemos transladar a camera
   distancia.x+=delta.x;
   distancia.y+=delta.y;
-
-  personagem.display(); //roda a animacao do personagem
+  
+  //Checando Condicao de existencia do personagem
+  if(personagem.pos.y >= height*2 || personagem.delete){ //se a altura que x esta for maior do que o maximo de morte ou delete verdadeiro.
+    box2d.destroyBody(personagem.body);//deletando corpo fisico do personagem
+    for(Inimigo inimi: inimigos){
+    box2d.destroyBody(inimi.body);
+    }
+    primeiroLoop = true;
+  }
 
   pushMatrix();
   translate((width/2)-posInicial.x-distancia.x, (height/2)-posInicial.y-distancia.y); //deslocaremos a "camera" em x em 70-distancia.x porque : queremos a camera centrada no personagem,logo -70.
   //Queremos que os objetos sejam "passados" para tr\u00e1s, logo -distancia.x. O mesmo vale para Y. Lembrando que fixamos a camera em 100,200 no personagem.
+  image(imgBackground, 0, 0);
   for (Boundary wall: boundaries) {
     wall.display();
   }
@@ -122,6 +131,7 @@ public void draw() {
     inimi.display();
   }
   popMatrix();
+  personagem.display(); //roda a animacao do personagem
   /*DEBUG
    contadordeloops++;
    if(contadordeloops==200)
@@ -274,7 +284,9 @@ public void criarCenario(int fase){
       inimigos.add(new Inimigo(20,520,height-120,1));
       break;
     case 2: //aqui usarei tudo em relacao ao tamanho da tela para tornar o codigo mais portatil.
+      imgBackground = loadImage("Cenario1.jpg");
       posInicial = new Vec2 (0.1f*width,0.6595f*height); //nao estranhe o valor, fui ajustando visualmente.
+      
       boundaries = new ArrayList<Boundary>();
       boundaries.add(new Boundary(0.1f*width,0.8f*height,0.6f*width,0.2f*height,0));
       boundaries.add(new Boundary(1.075f*width, 0.8f*height, 0.6f*width, 0.2f*height,0));
@@ -286,6 +298,7 @@ public void criarCenario(int fase){
       plataforms.add(new Plataform(0.475f*width,0.725f*height,0.15f*width, 0.05f*height, new Vec2(5,0), new Vec2(0.475f*width,0.725f*height), new Vec2(0.7f*width,0.725f*height)));
       
       inimigos = new ArrayList<Inimigo>();
+      inimigos.add(new Inimigo(20,1120,0.7f*height,1));
       break;
     }
 }
@@ -380,7 +393,7 @@ class Personagem {
   boolean delete = false;
 
   Personagem(float x, float y){
-    altura = 50;
+    altura = 75;
     largura = 50;
     
     BodyDef bd = new BodyDef(); //criando as caracteristicas de um corpo do nosso personagem
@@ -403,7 +416,7 @@ class Personagem {
     //Nao encontrei uma traducao para fixture, mas creio que seriam como "propriedades" algo do tipo.
     fd.shape = ps; //Informamos que o formato do corpo sera o formato ps criado. Isso porque, a box2d ira utilizar este para calular informacoes
     //uteis como: Massa, centro de massa, momento angular e etc.
-    fd.density = 3.0f; // definindo a densidade, veja, nao damos uma massa e sim a densidade, a massa sera calculada usando as dimensoes e densidade
+    fd.density = 2.0f; // definindo a densidade, veja, nao damos uma massa e sim a densidade, a massa sera calculada usando as dimensoes e densidade
     fd.friction = 0.45f; //coeficiente de atrito
     fd.restitution = 0.1f; //coeficiente de restituicao
     
@@ -415,14 +428,6 @@ class Personagem {
       float angulo = body.getAngle(); //angulo do corpo
       pos = box2d.getBodyPixelCoord(body);  //o vetor posicao (Vec2 = vetor de duas dimensoes) sera dado pela conversao da posicao do corpo body para o sistema pixel
       
-      if(pos.y >= height*2 || delete){ //se a altura que x esta for maior do que o maximo de morte ou delete verdadeiro.
-        box2d.destroyBody(body);//deletando corpo fisico do personagem
-        for(Inimigo inimi: inimigos){
-          box2d.destroyBody(inimi.body);
-        }
-        //delay(2000);
-        primeiroLoop = true;
-      }
     
       pushMatrix();
       translate(width/2,height/2); //imagem sera deslocada0);

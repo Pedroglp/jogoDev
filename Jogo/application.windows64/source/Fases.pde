@@ -26,7 +26,9 @@ void criarCenario(int fase){
       inimigos.add(new Inimigo(20,520,height-120,1));
       break;
     case 2: //aqui usarei tudo em relacao ao tamanho da tela para tornar o codigo mais portatil.
+      imgBackground = loadImage("Cenario1.jpg");
       posInicial = new Vec2 (0.1*width,0.6595*height); //nao estranhe o valor, fui ajustando visualmente.
+      
       boundaries = new ArrayList<Boundary>();
       boundaries.add(new Boundary(0.1*width,0.8*height,0.6*width,0.2*height,0));
       boundaries.add(new Boundary(1.075*width, 0.8*height, 0.6*width, 0.2*height,0));
@@ -38,6 +40,7 @@ void criarCenario(int fase){
       plataforms.add(new Plataform(0.475*width,0.725*height,0.15*width, 0.05*height, new Vec2(5,0), new Vec2(0.475*width,0.725*height), new Vec2(0.7*width,0.725*height)));
       
       inimigos = new ArrayList<Inimigo>();
+      inimigos.add(new Inimigo(20,1120,0.7*height,1));
       break;
     }
 }

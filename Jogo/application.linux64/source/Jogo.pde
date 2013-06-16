@@ -25,6 +25,7 @@ Vec2 distancia = new Vec2(0, 0);
 boolean primeiroLoop = true;   //necessario para alguns eventos que so devem ocorrer uma vez
 //int contadordeloops = 0; //para debug
 int fase = 2; //fase começa em 1 por padrao
+PImage imgBackground;
 
 /*USADAS PARA LEITURA DE TECLAS*/
 boolean[]keys = new boolean[5];
@@ -53,7 +54,7 @@ void setup() {
   box2d.createWorld(); //criando um "mundo fisico"
   box2d.listenForCollisions();//inicia o leitor de colisao
   box2d.setGravity(0, -10);//gravidade -10m/s
-  frameRate(120);//aumentei a frame rate, nao entendi em que isso mudaria no jogo caso coloca-se < 120, mas de alguma forma acelerou os numeros de acoes que box2d faz em 1 seg.
+  frameRate(60);//aumentei a frame rate, nao entendi em que isso mudaria no jogo caso coloca-se < 120, mas de alguma forma acelerou os numeros de acoes que box2d faz em 1 seg.
 }
 
 //essa sera a funcao utilizada para desenhar os quadros e dar o step (passo) no universo fisico
@@ -78,12 +79,20 @@ void draw() {
   //vamos somando a distancia pecorrida do momento a distancia total que devemos transladar a camera
   distancia.x+=delta.x;
   distancia.y+=delta.y;
-
-  personagem.display(); //roda a animacao do personagem
+  
+  //Checando Condicao de existencia do personagem
+  if(personagem.pos.y >= height*2 || personagem.delete){ //se a altura que x esta for maior do que o maximo de morte ou delete verdadeiro.
+    box2d.destroyBody(personagem.body);//deletando corpo fisico do personagem
+    for(Inimigo inimi: inimigos){
+    box2d.destroyBody(inimi.body);
+    }
+    primeiroLoop = true;
+  }
 
   pushMatrix();
   translate((width/2)-posInicial.x-distancia.x, (height/2)-posInicial.y-distancia.y); //deslocaremos a "camera" em x em 70-distancia.x porque : queremos a camera centrada no personagem,logo -70.
   //Queremos que os objetos sejam "passados" para trás, logo -distancia.x. O mesmo vale para Y. Lembrando que fixamos a camera em 100,200 no personagem.
+  image(imgBackground, 0, 0);
   for (Boundary wall: boundaries) {
     wall.display();
   }
@@ -97,6 +106,7 @@ void draw() {
     inimi.display();
   }
   popMatrix();
+  personagem.display(); //roda a animacao do personagem
   /*DEBUG
    contadordeloops++;
    if(contadordeloops==200)
